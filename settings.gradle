@@ -4,4 +4,6 @@ include 'discovery-service'
 include 'customer-service'
 include 'product-service'
 include 'shopping-service'
+include 'gateway-service'
+
 rootProject.name = 'onlinestore'
