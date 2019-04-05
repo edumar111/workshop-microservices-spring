@@ -5,6 +5,7 @@ import academy.digitallab.onlinestore.productservice.domain.repository.entity.Ca
 import academy.digitallab.onlinestore.productservice.domain.repository.entity.Product;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,18 +15,20 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/products")
-//@CrossOrigin(origins = {"http://localhost:4200"},allowCredentials = "true")
-//@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
+
 public class ProductRest {
     @Autowired
     ProductService productService;
-
+    @Value("${eureka.instance.instance-id}")
+    private String instanceId;
 
 
     // -------------------Retrieve All Products--------------------------------------------
 
     @GetMapping
     public ResponseEntity<List<Product>> listAllProducts() {
+        log.info (  "Instace:{}", instanceId);
         List<Product> products = productService.findProductAll();
         if (products.isEmpty()) {
             return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
@@ -50,7 +53,7 @@ public class ProductRest {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") long id) {
-        log.info("Fetching Product with id {}", id);
+        log.info("Fetching Product with id {} on instance { }", id, instanceId);
         Product product = productService.getProduct(id);
         if (product == null) {
             log.error("Product with id {} not found.", id);

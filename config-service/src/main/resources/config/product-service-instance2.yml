@@ -1,6 +1,6 @@
 #Application Configuration
 server:
-  port: 8091
+  port: 8094
 
 # To See H2 Console in Browser:
 # http://localhost:8090/h2-console
@@ -36,6 +36,5 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8099/eureka/
-
   instance:
     instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}

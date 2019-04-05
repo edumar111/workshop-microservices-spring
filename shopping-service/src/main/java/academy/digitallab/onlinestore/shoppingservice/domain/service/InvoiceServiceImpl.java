@@ -1,6 +1,10 @@
 package academy.digitallab.onlinestore.shoppingservice.domain.service;
 
 import academy.digitallab.onlinestore.shoppingservice.domain.InvoiceService;
+import academy.digitallab.onlinestore.shoppingservice.domain.client.CustomerClient;
+import academy.digitallab.onlinestore.shoppingservice.domain.client.ProductClient;
+import academy.digitallab.onlinestore.shoppingservice.domain.model.Customer;
+import academy.digitallab.onlinestore.shoppingservice.domain.model.Product;
 import academy.digitallab.onlinestore.shoppingservice.domain.repository.InvoiceItemsRepository;
 import academy.digitallab.onlinestore.shoppingservice.domain.repository.InvoiceRepository;
 import academy.digitallab.onlinestore.shoppingservice.domain.repository.entity.Invoice;
@@ -10,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,6 +27,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Autowired
     InvoiceItemsRepository invoiceItemsRepository;
 
+    @Autowired
+    ProductClient productClient;
+
+    @Autowired
+    CustomerClient customerClient;
+
     @Override
     public List<Invoice> findInvoiceAll() {
         return  invoiceRepository.findAll();
@@ -31,7 +42,12 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Invoice createInvoice(Invoice invoice) {
         invoice.setState("CREATED");
-        return invoiceRepository.save(invoice);
+        Invoice invoiceDB= invoiceRepository.save(invoice);
+        for (InvoiceItems item: invoice.getItems() ){
+            productClient.updateStockProduct ( item.getProductId (), item.getQuantity () );
+        }
+
+        return invoiceDB;
     }
 
     @Transactional
@@ -62,6 +78,22 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Invoice getInvoice(Long id) {
-        return invoiceRepository.findById(id).orElse(null);
+        Invoice  invoice= invoiceRepository.findById(id).orElse(null);
+        if (invoice != null){
+
+            Customer customer= customerClient.getCustomer ( invoice.getCustomerId ()  ).getBody ();
+            invoice.setCustomer ( customer );
+            log.info ( customer.getLastName () );
+            List<InvoiceItems> listTem= new ArrayList <> (  );
+            for (InvoiceItems item: invoice.getItems() ){
+                Long idProduct = item.getProductId ();
+                Product product = productClient.getProduct ( idProduct ).getBody ();
+                item.setProduct ( product );
+                listTem.add ( item );
+                log.info ( product.getName () );
+            }
+            invoice.setItems ( listTem );
+        }
+        return invoice ;
     }
 }

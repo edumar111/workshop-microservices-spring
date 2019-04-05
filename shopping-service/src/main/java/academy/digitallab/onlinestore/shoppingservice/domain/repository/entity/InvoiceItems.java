@@ -1,6 +1,7 @@
 package academy.digitallab.onlinestore.shoppingservice.domain.repository.entity;
 
 
+import academy.digitallab.onlinestore.shoppingservice.domain.model.Product;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,5 +21,8 @@ public class InvoiceItems implements Serializable {
 
     @Column(name = "product_id")
     private Long productId;
+
+    @Transient
+    Product product;
 
 }

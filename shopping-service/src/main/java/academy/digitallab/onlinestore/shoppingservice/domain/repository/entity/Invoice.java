@@ -1,5 +1,6 @@
 package academy.digitallab.onlinestore.shoppingservice.domain.repository.entity;
 
+import academy.digitallab.onlinestore.shoppingservice.domain.model.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -25,6 +26,9 @@ public class Invoice implements Serializable {
     private String description;
     @Column(name = "customer_id")
     private Long customerId;
+    @Transient
+    private Customer customer;
+
     @Column(name = "create_at")
     @Temporal(TemporalType.DATE)
     private Date createAt;
