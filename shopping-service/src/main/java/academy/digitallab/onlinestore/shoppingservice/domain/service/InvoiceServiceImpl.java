@@ -16,7 +16,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+/**
+ * <h1>InvoiceServiceImpl<h1/>
+ * This class implement methods Invoice
+ * @author Eduaro Marchena @edumar111
+ * @version 1.0
+ * @since 2019
+ * **/
 @Slf4j
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -31,7 +40,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     ProductClient productClient;
 
     @Autowired
-    CustomerClient customerClient;
+    private CustomerClient customerClient;
 
     @Override
     public List<Invoice> findInvoiceAll() {
@@ -84,7 +93,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             Customer customer= customerClient.getCustomer ( invoice.getCustomerId ()  ).getBody ();
             invoice.setCustomer ( customer );
             log.info ( customer.getLastName () );
-            List<InvoiceItems> listTem= new ArrayList <> (  );
+
+           /* List<InvoiceItems> listTem= new ArrayList <> (  );
             for (InvoiceItems item: invoice.getItems() ){
                 Long idProduct = item.getProductId ();
                 Product product = productClient.getProduct ( idProduct ).getBody ();
@@ -92,7 +102,14 @@ public class InvoiceServiceImpl implements InvoiceService {
                 listTem.add ( item );
                 log.info ( product.getName () );
             }
-            invoice.setItems ( listTem );
+            invoice.setItems ( listTem );*/
+
+           invoice.getItems ().stream ().map ( item -> {
+                Product product = productClient.getProduct ( item.getId () ).getBody ();
+                item.setProduct ( product );
+                return item;
+            } ).collect( Collectors.toList());
+
         }
         return invoice ;
     }

@@ -10,7 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+/**
+ * <h1>CategoryRest<h1/>
+ * This class Resource Category for Rest Api
+ * @author Eduaro Marchena @edumar111
+ * @version 1.0
+ * @since 2019
+ * **/
 @Slf4j
 @RestController
 @RequestMapping( value = "/categories")
