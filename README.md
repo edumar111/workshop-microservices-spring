@@ -27,8 +27,7 @@ Customer
 
 Products
 
-    curl -X GET http://localhost:8080/products \
-    -H 'Accept: application/json' | jq '.'
+    curl -X GET http://localhost:8080/products  -H 'Accept: application/json' | jq '.'
 
 
 Invoices
