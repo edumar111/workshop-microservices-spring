@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.1.4.RELEASE'
+	id 'org.springframework.boot' version '2.2.5.RELEASE'
 	id 'java'
 }
 
@@ -7,14 +7,14 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'academy.digitallab.onlinestore'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
 }
 
 ext {
-	set('springCloudVersion', 'Greenwich.SR1')
+	set('springCloudVersion', "Hoxton.SR1")
 }
 
 dependencies {
