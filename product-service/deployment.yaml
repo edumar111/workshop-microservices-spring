@@ -8,11 +8,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app-code: product-service
+      app-name: product-service
   template:
     metadata:
       labels:
-        app-code: product-service
+        app-name: product-service
     spec:
       containers:
         - name: product-service
