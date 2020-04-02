@@ -47,9 +47,11 @@ spec:
   selector:
     app-name: product-service
   ports:
-    - protocol: TCP
-      port: 8091
-      targetPort: 8091
-      name: http
+  - protocol: TCP
+    port: 8091
+    targetPort: 8091
+    name: http
+  externalIPs:
+    - 192.168.33.10
 
 
