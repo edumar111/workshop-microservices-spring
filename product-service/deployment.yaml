@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  labels:
+    app-name: product-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app-code: product-service
+  template:
+    metadata:
+      labels:
+        app-code: product-service
+    spec:
+      containers:
+        - name: product-service
+          image:  edumar111/product-service:1.0.0
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "512Mi"
+            limits:
+              memory: "1024Mi"
+          ports:
+            - containerPort: 8091
+              name: http
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8091
+            initialDelaySeconds: 90
+            periodSeconds: 30
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: product-service-svc
+  labels:
+    svc-name: product-service-svc
+spec:
+  type: NodePort
+  selector:
+    app-name: product-service
+  ports:
+    - protocol: TCP
+      port: 8091
+      targetPort: 8091
+      name: http
+
+
