@@ -9,7 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import java.util.Arrays;
 
-@EnableDiscoveryClient
+
 @SpringBootApplication
 public class ProductServiceApplication  {
 

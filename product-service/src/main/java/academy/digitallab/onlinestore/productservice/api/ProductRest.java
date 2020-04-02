@@ -26,15 +26,14 @@ import java.util.List;
 public class ProductRest {
     @Autowired
     ProductService productService;
-    @Value("${eureka.instance.instance-id}")
-    private String instanceId;
+
 
 
     // -------------------Retrieve All Products--------------------------------------------
 
     @GetMapping
     public ResponseEntity<List<Product>> listAllProducts() {
-        log.info (  "Instace:{}", instanceId);
+
         List<Product> products = productService.findProductAll();
         if (products.isEmpty()) {
             return new ResponseEntity<>(products, HttpStatus.NOT_FOUND);
@@ -59,7 +58,7 @@ public class ProductRest {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") long id) {
-        log.info("Fetching Product with id {} on instance { }", id, instanceId);
+        log.info("Fetching Product with id {} on instance { }", id);
         Product product = productService.getProduct(id);
         if (product == null) {
             log.error("Product with id {} not found.", id);
