@@ -50,8 +50,7 @@ spec:
   - protocol: TCP
     port: 8091
     targetPort: 8091
+    nodePort: 30091
     name: http
-  externalIPs:
-    - 192.168.33.10
 
 
